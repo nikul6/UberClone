@@ -1,12 +1,15 @@
 import { Text, View, SafeAreaView, StyleSheet, Image, TextInput, TouchableOpacity } from 'react-native'
 import React, { useState } from 'react'
 import NavOptions from '../components/NavOptions'
-import { searchLocation } from '../utils'
+import { searchLocation } from '../utils';
+import { useDispatch } from 'react-redux';
+import { setDestination, setOrigin } from '../slices/navSlice';
 
 const Home = () => {
 
   const [query, setQuery] = useState('');
   const [result, setResult] = useState([]);
+  const dispatch = useDispatch();
 
   const getPlaces = (text) => {
     searchLocation(text).then(data => {
@@ -30,7 +33,16 @@ const Home = () => {
           <View style={{ marginTop: 10, }}>
             {result.map((addressItem, index) => (
               <View key={index} style={styles.resultConatiner}>
-                <TouchableOpacity onPress={() => { setQuery(addressItem.place_name); setResult([]) }} activeOpacity={0.9}>
+                <TouchableOpacity onPress={() => {
+                  console.log("addressItem ---> ", addressItem)
+                  setQuery(addressItem.place_name);
+                  dispatch(setOrigin({
+                    location: addressItem.center,
+                    description: addressItem.place_name
+                  }))
+                  dispatch(setDestination(null))
+                  setResult([]);
+                }} activeOpacity={0.9}>
                   <Text numberOfLines={2} style={styles.resultTextStyle}>{addressItem.place_name}</Text>
                 </TouchableOpacity>
               </View>
