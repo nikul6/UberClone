@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+import React, { useEffect, useRef } from 'react'
 import MapView, { Marker, Polyline } from 'react-native-maps';
 import { useSelector } from 'react-redux';
 import { selectDestination, selectOrigin } from '../slices/navSlice'
@@ -9,11 +9,20 @@ const DisplayMap = () => {
 
     const origin = useSelector(selectOrigin);
     const destination = useSelector(selectDestination);
-    console.log("origin ----> ", origin)
-    console.log("destination ---> ", destination)
+    const mapRef = useRef(null);
+    // console.log("origin ----> ", origin)
+    // console.log("destination ---> ", destination)
+
+    useEffect(() => {
+        if (!origin || !destination) return;
+        mapRef.current.fitToSuppliedMarkers(['origin', 'destination'], {
+            edgePadding: { top: 50, bottom: 50, right: 50, left: 50 }
+        })
+    }, [origin, destination])
 
     return (
         <MapView
+            ref={mapRef}
             style={{ flex: 1 }}
             mapType="mutedStandard"
             initialRegion={{
@@ -48,6 +57,18 @@ const DisplayMap = () => {
                     title="Origin"
                     description={origin.description}
                     identifier="origin"
+                />
+            )}
+
+            {destination?.location && (
+                <Marker
+                    coordinate={{
+                        latitude: destination.location[1],
+                        longitude: destination.location[0],
+                    }}
+                    title="Destination"
+                    description={destination.description}
+                    identifier="destination"
                 />
             )}
         </MapView>
