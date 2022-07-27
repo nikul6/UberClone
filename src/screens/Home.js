@@ -34,7 +34,6 @@ const Home = () => {
             {result.map((addressItem, index) => (
               <View key={index} style={styles.resultConatiner}>
                 <TouchableOpacity onPress={() => {
-                  console.log("addressItem ---> ", addressItem)
                   setQuery(addressItem.place_name);
                   dispatch(setOrigin({
                     location: addressItem.center,
@@ -78,7 +77,7 @@ const styles = StyleSheet.create({
   },
   resultConatiner: {
     marginVertical: 1,
-    borderBottomWidth: 1.4,
+    borderBottomWidth: 0.5,
     padding: 10,
     borderBottomColor: 'gray'
   },

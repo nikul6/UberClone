@@ -6,7 +6,6 @@ import {selectOrigin} from '../slices/navSlice'
 
 const DisplayMap = () => {
     const origin = useSelector(selectOrigin);
-    console.log("origin --> ", origin.location)
     return (
         <MapView
             style={{ flex: 1 }}
