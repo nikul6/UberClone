@@ -1,11 +1,17 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
-import MapView, {Marker} from 'react-native-maps';
-import {useSelector} from 'react-redux';
-import {selectOrigin} from '../slices/navSlice'
+import MapView, { Marker, Polyline } from 'react-native-maps';
+import { useSelector } from 'react-redux';
+import { selectDestination, selectOrigin } from '../slices/navSlice'
+// import MapViewDirections from 'react-native-maps-directions';
 
 const DisplayMap = () => {
+
     const origin = useSelector(selectOrigin);
+    const destination = useSelector(selectDestination);
+    console.log("origin ----> ", origin)
+    console.log("destination ---> ", destination)
+
     return (
         <MapView
             style={{ flex: 1 }}
@@ -17,6 +23,22 @@ const DisplayMap = () => {
                 longitudeDelta: 0.005,
             }}
         >
+            {origin && destination && (
+                // <MapViewDirections
+                //     origin={origin.description}
+                //     destination={destination.description}
+                //     apikey={GOOGLE_MAPS_APIKEY}
+                //     strokeWidth={3}
+                //     strokeColor="#000"
+                // />
+                <Polyline
+                    coordinates={[{ latitude: origin.location[1], longitude: origin.location[0] },
+                    { latitude: destination.location[1], longitude: destination.location[0] }]}
+                    strokeColor={"#000"}
+                    strokeWidth={3}
+                    lineDashPattern={[1]}
+                />
+            )}
             {origin?.location && (
                 <Marker
                     coordinate={{
@@ -28,7 +50,7 @@ const DisplayMap = () => {
                     identifier="origin"
                 />
             )}
-            </MapView>
+        </MapView>
     )
 }
 
