@@ -4,6 +4,8 @@ import { searchLocation } from '../utils';
 import { useDispatch } from 'react-redux';
 import { setDestination } from '../slices/navSlice';
 import { useNavigation } from '@react-navigation/native';
+import NavFavourites from '../components/NavFavourites';
+import { Ionicons, FontAwesome } from '@expo/vector-icons';
 
 const NavigateCard = () => {
 
@@ -51,6 +53,17 @@ const NavigateCard = () => {
                         </View>
                     }
                 </View>
+                <NavFavourites />
+            </View>
+            <View style={styles.bottomConatiner}>
+                <TouchableOpacity style={styles.rideEatsConatiner}>
+                    <FontAwesome name="car" size={16} color="#fff" />
+                    <Text style={styles.rideEatsTextStyle}>Rides</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.rideEatsConatiner}>
+                    <Ionicons name="fast-food-outline" size={16} color="#fff" />
+                    <Text style={styles.rideEatsTextStyle}>Eats</Text>
+                </TouchableOpacity>
             </View>
         </SafeAreaView>
     )
@@ -65,7 +78,8 @@ const styles = StyleSheet.create({
     mainConatiner: {
         // borderWidth: 1, 
         borderColor: 'gray',
-        borderTopWidth: 0.5
+        borderTopWidth: 0.5,
+        flex: 5
     },
     placeContainer: {
         height: 46,
@@ -84,5 +98,14 @@ const styles = StyleSheet.create({
     resultTextStyle: {
         lineHeight: 20,
         width: "100%",
+    },
+    bottomConatiner: {
+        padding: 10, flexDirection: 'row', justifyContent: 'space-evenly'
+    },
+    rideEatsConatiner: {
+        flexDirection: 'row', backgroundColor: '#000', padding: 10, borderRadius: 20, justifyContent: 'center', alignItems: 'center', height: 35
+    },
+    rideEatsTextStyle: {
+        color: '#fff', marginLeft: 10
     }
 })

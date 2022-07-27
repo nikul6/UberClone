@@ -4,6 +4,7 @@ import NavOptions from '../components/NavOptions'
 import { searchLocation } from '../utils';
 import { useDispatch } from 'react-redux';
 import { setDestination, setOrigin } from '../slices/navSlice';
+import NavFavourites from '../components/NavFavourites';
 
 const Home = () => {
 
@@ -49,6 +50,7 @@ const Home = () => {
           </View>
         }
         <NavOptions />
+        <NavFavourites/>
       </View>
     </SafeAreaView>
   )
