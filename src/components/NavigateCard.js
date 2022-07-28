@@ -56,7 +56,7 @@ const NavigateCard = () => {
                 <NavFavourites />
             </View>
             <View style={styles.bottomConatiner}>
-                <TouchableOpacity style={styles.rideEatsConatiner}>
+                <TouchableOpacity style={styles.rideEatsConatiner} onPress={()=> navigation.navigate('RideOptionsCard')}>
                     <FontAwesome name="car" size={16} color="#fff" />
                     <Text style={styles.rideEatsTextStyle}>Rides</Text>
                 </TouchableOpacity>
