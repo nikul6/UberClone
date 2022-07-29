@@ -53,6 +53,11 @@ const RideOptionsCard = () => {
           </TouchableOpacity>
         )}
       />
+      <View>
+        <TouchableOpacity disabled={!select} style={[styles.chooseRideConatiner, { backgroundColor: !select ? 'gray' : '#000', }]}>
+          <Text style={styles.chooseTextStyle}>Choose {select?.title}</Text>
+        </TouchableOpacity>
+      </View>
     </SafeAreaView>
   )
 }
@@ -77,5 +82,11 @@ const styles = StyleSheet.create({
   },
   rideTitlePriceStyle: {
     fontSize: 15, fontWeight: 'bold'
+  },
+  chooseRideConatiner: {
+    padding: 10, margin: 10
+  },
+  chooseTextStyle: {
+    fontSize: 15, textAlign: 'center', color: '#fff'
   }
 })

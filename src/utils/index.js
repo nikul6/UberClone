@@ -18,3 +18,15 @@ export const searchLocation = (query) => {
             .catch(err => reject(err))
     })
 }
+
+export const getDistanceData = (query) => {
+    return new Promise((resolve, reject) => {
+        fetch(`https://api.mapbox.com/directions/v5/mapbox/driving/${query.originLong},${query.originLat};${query.desLong},${query.desLat}?access_token=${MAPBOX_ACCESS_TOKEN}`)
+            .then(res => res.json())
+            .then(data => {
+                const distance = data.routes[0];
+                resolve(distance)
+            })
+            .catch(err => reject(err))
+    })
+}

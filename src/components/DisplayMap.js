@@ -2,7 +2,8 @@ import { StyleSheet, Text, View } from 'react-native'
 import React, { useEffect, useRef } from 'react'
 import MapView, { Marker, Polyline } from 'react-native-maps';
 import { useSelector } from 'react-redux';
-import { selectDestination, selectOrigin } from '../slices/navSlice'
+import { selectDestination, selectOrigin } from '../slices/navSlice';
+import { getDistanceData } from '../utils';
 // import MapViewDirections from 'react-native-maps-directions';
 
 const DisplayMap = () => {
@@ -18,7 +19,21 @@ const DisplayMap = () => {
         mapRef.current.fitToSuppliedMarkers(['origin', 'destination'], {
             edgePadding: { top: 50, bottom: 50, right: 50, left: 50 }
         })
-    }, [origin, destination])
+    }, [origin, destination]);
+
+    useEffect(() => {
+        if (!origin || !destination) return;
+        const getTravelTime = () => {
+            const distanceLatLong = {
+                originLong: origin.location[0],
+                originLat: origin.location[1],
+                desLong: destination.location[0],
+                desLat: destination.location[1],
+            }
+            getDistanceData(distanceLatLong).then((data)=>console.log("data ----> ",data))
+        }
+        getTravelTime();
+    }, [origin, destination]);
 
     return (
         <MapView
