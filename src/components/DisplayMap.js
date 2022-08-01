@@ -1,9 +1,10 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet } from 'react-native'
 import React, { useEffect, useRef } from 'react'
 import MapView, { Marker, Polyline } from 'react-native-maps';
 import { useSelector } from 'react-redux';
-import { selectDestination, selectOrigin } from '../slices/navSlice';
+import { selectDestination, selectOrigin, setTravelTimeInfromation } from '../slices/navSlice';
 import { getDistanceData } from '../utils';
+import { useDispatch } from 'react-redux';
 // import MapViewDirections from 'react-native-maps-directions';
 
 const DisplayMap = () => {
@@ -11,6 +12,7 @@ const DisplayMap = () => {
     const origin = useSelector(selectOrigin);
     const destination = useSelector(selectDestination);
     const mapRef = useRef(null);
+    const dispatch = useDispatch();
     // console.log("origin ----> ", origin)
     // console.log("destination ---> ", destination)
 
@@ -30,7 +32,7 @@ const DisplayMap = () => {
                 desLong: destination.location[0],
                 desLat: destination.location[1],
             }
-            getDistanceData(distanceLatLong).then((data)=>console.log("data ----> ",data))
+            getDistanceData(distanceLatLong).then((data) => dispatch(setTravelTimeInfromation(data)))
         }
         getTravelTime();
     }, [origin, destination]);

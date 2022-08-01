@@ -2,6 +2,8 @@ import { FlatList, Image, SafeAreaView, StyleSheet, Text, TouchableOpacity, View
 import React, { useState } from 'react'
 import { FontAwesome } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
+import { useSelector } from 'react-redux';
+import { selectTravelTimeInfromation } from '../slices/navSlice';
 
 const data = [
   {
@@ -24,10 +26,23 @@ const data = [
   },
 ]
 
+const SURGE_CHARGE_RATE = 1.5;
+
 const RideOptionsCard = () => {
 
   const navigation = useNavigation();
   const [select, setSelected] = useState(null);
+  const travelTimeInfromation = useSelector(selectTravelTimeInfromation);
+  console.log("travelTimeInfromation ---> ", travelTimeInfromation)
+
+  const secondsToHms = (seconds) => {
+    var h = Math.floor(seconds / 3600);
+    var m = Math.floor(seconds % 3600 / 60);
+
+    var hDisplay = h > 0 ? h + (h == 1 ? " hour, " : " hours, ") : "";
+    var mDisplay = m > 0 ? m + (m == 1 ? " minute, " : " minutes") : "";
+    return hDisplay + mDisplay;
+  }
 
   return (
     <SafeAreaView style={styles.mainCoantiner}>
@@ -35,8 +50,8 @@ const RideOptionsCard = () => {
         <TouchableOpacity style={{ flex: 1 }} onPress={() => navigation.navigate('NavigateCard')}>
           <FontAwesome name="chevron-left" size={16} color="#000" />
         </TouchableOpacity>
-        <View style={{ flex: 1.5 }}>
-          <Text style={styles.rideTextStyle}>Select a Ride</Text>
+        <View style={{ flex: 2 }}>
+          <Text style={styles.rideTextStyle}>Select a Ride - {(travelTimeInfromation?.distance / 1000).toFixed(2)} KM</Text>
         </View>
       </View>
       <FlatList
@@ -47,9 +62,14 @@ const RideOptionsCard = () => {
             <Image source={{ uri: image }} style={styles.carImageConatiner} />
             <View style={{ marginRight: 15 }}>
               <Text style={styles.rideTitlePriceStyle}>{title}</Text>
-              <Text>Travel Time...</Text>
+              <Text>{secondsToHms(travelTimeInfromation?.duration)} Travel Time</Text>
             </View>
-            <Text style={styles.rideTitlePriceStyle}>$99</Text>
+            <Text style={styles.rideTitlePriceStyle}>{
+              new Intl.NumberFormat("en-IN", {
+                style: 'currency',
+                currency: 'INR'
+              }).format((travelTimeInfromation?.distance * SURGE_CHARGE_RATE * multipiler / 100))
+            }</Text>
           </TouchableOpacity>
         )}
       />
